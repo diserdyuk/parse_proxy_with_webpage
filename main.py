@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 
 def get_html(url):    # get html code from web page
-    proxy = {}
+    # proxies = {'https': 'ipaddress:5000'}
     r = requests.get(url)
     return r.text
 
@@ -11,21 +11,24 @@ def get_html(url):    # get html code from web page
 def get_proxy(html):    # parse html code and get ip-adress
     soup = BeautifulSoup(html, 'lxml')
 
-    tbody = soup.find('tbody').find_all('tr')
-    print(tbody)
+    tr_tags = soup.find('tbody').find_all('tr')[0:10]
 
-    # cnt = 0
-    # for i in tbody:
-    #     td_ip = i.find_all('td')[0].text
-    #     cnt += 1
-    #     print(cnt, td_ip)
+    for i in tr_tags:    # with tags get ip, port, https  
+        td_tags = i.find_all('td')
+
+        ip = td_tags[0].text.strip()
+        port = td_tags[1].text.strip()
+        http = 'https' if 'yes' in td_tags[6].text.strip() else 'http'
+        
+        proxy = {'ipaddres': ip + ':' + port, 'http': http}
+        print(proxy)
 
 
 
 def main():
     url = 'https://free-proxy-list.net/'
 
-    print(get_proxy(get_html(url)))
+    get_proxy(get_html(url))
 
 
 
