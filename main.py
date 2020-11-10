@@ -27,7 +27,7 @@ def get_proxy(html):    # parse html code and get ip-adress
         proxy = {'ipaddress': ip + ':' + port, 'http': http}
         proxies.append(proxy)
 
-    return choice(proxies)    # return random elements
+    return choice(proxies)    # return random elements 
 
 
 
